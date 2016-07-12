@@ -61,10 +61,6 @@ def init_upload(jpk_nazwa):
     jpk['zip_len']= len(jpk_zip)
     jpk['zip_hash']= base64.b64encode(md5.digest())
  
-    # Zapisanie archiwum zip - dla testów
-    with open(jpk['zip_nazwa'], 'wb') as f:
-        f.write(jpk_zip)
-        
     # Zapisanie zaszyfrowanego pliku zip (to będzie wysyłane w kroku upload)
     with open(jpk['zip_nazwa']+'.aes', 'wb') as f:
         f.write(jpk_aes)
@@ -129,7 +125,7 @@ def upload(jpk_xades):
      
 def upload_status(ref= None, jpk_nazwa= None):
     if ref is None:
-        ref= open(jpk_nazwa.split('-')[0]+'.ref').read()
+        ref= open(re.sub('.xml$', '', jpk_nazwa.split('-')[0])+'.ref').read()
     resp= requests.get('%s/Status/%s'%(MF_URL, ref), verify= False)
     print resp.text
 
