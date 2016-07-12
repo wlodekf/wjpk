@@ -32,7 +32,7 @@ Klucz ten został wydzielony z dostarczonego przez MF certyfikatu
 
 ## 1. Przygotowanie danych uwierzytelniających - pliku XML dla operacji InitUpload
 
-> $ python wjpk.py init jpk1.xml
+> $ python wjpk.py **init** jpk1.xml
 
 W pierwszym kroku plik do wysłania jest szyfrowany wygenerowanym losowym kluczem i tworzony jest
 plik uwierzytelniający do podpisania podpisem kwalifikowanym.
@@ -47,13 +47,13 @@ Krok init tworzy następujące pliki
 
 Utworzony plik uwierzytelniający (np. jpk1-initupload.xml) należy podpisać podpisem kwalifikowanym.
 Podpisany plik naleźy wgrać do katalogu. Dalej zakładamy, że plik ten ma dodatkowe rozszerzenie
-.xades (np. jpk1-initupload.xml.xades) ale nazwa moźe być inna w zależności od użytego do podpisu pliku.
+.xades (np. jpk1-initupload.xml.xades) ale nazwa moźe być inna w zależności od użytego do podpisu programu.
 
 ## 3. Wysłanie plików
 
-> $ python wjpk.py upload jpk1-initupload.xml.xades
+> $ python wjpk.py **upload** jpk1-initupload.xml.xades
 
-W następnym kroku wysyłamy zaszyfrowane pliki przy pomocy komendy **upload**.
+W tym kroku wysyłamy zaszyfrowane pliki przy pomocy komendy **upload**.
 Jako argument podajemy nazwę podpisanego pliku uwierzytelniającego.
 
 W kroku tym najpierw wysyłany jest plik uwierzytelniający i jeżeli wszystko z nim będzie w porządku to 
@@ -65,8 +65,8 @@ Aby moźna w następnym kroku sprawdzać status wkrypt zapisuje do pliku z rozsz
 
 ## 4. Sprawdzenie statusu / pobranie UPO
 
-> $ python wjpk.py status jpk1
+> $ python wjpk.py **status** jpk1
 
-W ostatnim kroku sprawdzamy status wysyłki a jeżeli nie ma błędów to pobierane jest równiez UPO.
+W ostatnim kroku sprawdzamy **status** wysyłki a jeżeli nie ma błędów to pobierane jest równiez UPO.
 Bramka sprawdza jedynie syntaktyczną poprawność przesłanego pliku JPK tzn. zgodność z odpowiednim schematem XSD.
 Nie są wykonywane żadne dodatkowe sprawdzenia (np. sum kontrolnych w pliku).
