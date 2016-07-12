@@ -1,7 +1,7 @@
 # Przygotowanie i wysyłka plików JPK
 
-Skrypt w pythonie (2.7) do przygotowania i wysyłki plików JPK.
-Wymgane są w używanym środowisku pythona następujące zależności:
+Skrypt w pythonie (2.7) do przygotowania (zaszyfrowanie) i wysyłki plików JPK.
+W używanym środowisku pythona wymagane są następujące zależności:
 
 * pycropto
 * requests
@@ -17,12 +17,13 @@ Wysyłka gotowego pliku JPK składa się z następujących etapów
 4. Sprawdzenie statusu / pobranie UPO
 
 Skrypt wjpk.py realizuje, kroki 1, 3, 4.
-Podpis przygotowanego w kroku 1 pliku xml trzeba wykonać przy pomocy odpowiedniego programu
-do obsługi podpisu kwalifikowanego.
+Podpis przygotowanego w kroku 1 pliku xml trzeba wykonać przy pomocy odpowiedniego programu do obsługi podpisu kwalifikowanego.
 
 W przykładach zakładamy, że mamy do wysłania plik jpk1.xml
 
-W katalogu z którego wysyłamy plik muszą się znajdować wszystkie pliki z projektu, tzn.
+Każdy plik JPK wysyłany jest niezależnie bo dla każdego tworzone jest osobne UPO.
+
+W katalogu, z którego wysyłamy plik muszą się znajdować wszystkie pliki z projektu, tzn.
 
 * initupload.tpl - szablon pliku inicjalizującego sesje
 * klucz_mf.pem - klucz publiczny MF do zaszyfrowanie klucza szyfrującego plik JPK
