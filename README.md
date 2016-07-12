@@ -1,7 +1,8 @@
 # Przygotowanie i wysyłka plików JPK
 
-Skrypt w pythonie (2.7) do przygotowania i wysyłki plików JPK.
-Wymgane są w używanym środowisku pythona następujące zależności:
+Skrypt w pythonie (2.7) do przygotowania (zaszyfrowanie), wysyłki plików JPK oraz pobrania UPO.
+
+W używanym środowisku pythona wymagane są następujące zależności:
 
 * pycropto
 * requests
@@ -16,15 +17,15 @@ Wysyłka gotowego pliku JPK składa się z następujących etapów
 3. Wysłanie plików
 4. Sprawdzenie statusu / pobranie UPO
 
-Skrypt wjpk.py realizuje, kroki 1, 3, 4.
-Podpis przygotowanego w kroku 1 pliku xml trzeba wykonać przy pomocy odpowiedniego programu
-do obsługi podpisu kwalifikowanego.
+Skrypt wjpk.py realizuje, kroki 1, 3, 4. Podpis przygotowanego w kroku 1 pliku uwierzytelniającego/inicjalizującego sesję trzeba wykonać przy pomocy odpowiedniego programu do obsługi podpisu kwalifikowanego.
 
-W przykładach zakładamy, że mamy do wysłania plik jpk1.xml
+W przykładach zakładamy, że mamy do wysłania plik **jpk1.xml**
 
-W katalogu z którego wysyłamy plik muszą się znajdować wszystkie pliki z projektu, tzn.
+Każdy plik JPK wysyłany jest niezależnie bo dla każdego tworzone jest osobne UPO.
 
-* initupload.tpl - szablon pliku inicjalizującego sesje
+W katalogu, z którego wysyłamy plik muszą się znajdować wszystkie pliki z projektu, tzn.
+
+* initupload.tpl - szablon pliku xml inicjalizującego sesję
 * klucz_mf.pem - klucz publiczny MF do zaszyfrowanie klucza szyfrującego plik JPK
 
 Klucz ten został wydzielony z dostarczonego przez MF certyfikatu
@@ -32,7 +33,7 @@ Klucz ten został wydzielony z dostarczonego przez MF certyfikatu
 
 ## 1. Przygotowanie danych uwierzytelniających - pliku XML dla operacji InitUpload
 
-> $ python wjpk.py **init** jpk1.xml
+> python wjpk.py **init** jpk1.xml
 
 W pierwszym kroku plik do wysłania jest szyfrowany wygenerowanym losowym kluczem i tworzony jest
 plik uwierzytelniający do podpisania podpisem kwalifikowanym.
@@ -51,7 +52,7 @@ Podpisany plik naleźy wgrać do katalogu. Dalej zakładamy, że plik ten ma dod
 
 ## 3. Wysłanie plików
 
-> $ python wjpk.py **upload** jpk1-initupload.xml.xades
+> python wjpk.py **upload** jpk1-initupload.xml.xades
 
 W tym kroku wysyłamy zaszyfrowane pliki przy pomocy komendy **upload**.
 Jako argument podajemy nazwę podpisanego pliku uwierzytelniającego.
@@ -60,12 +61,12 @@ W kroku tym najpierw wysyłany jest plik uwierzytelniający i jeżeli wszystko z
 następnie wysyłany jest spakowany i zaszyfrowany plik JPK (utworzony w pierwszym kroku plik z rozszerzeniem .aes).
 
 Jeżeli wysłanie się powiedzie to sprawdzany jest również status ale przeważnie plik nie będzie od razu przetworzony.
-Aby moźna w następnym kroku sprawdzać status wkrypt zapisuje do pliku z rozszereniem .ref numer referencyjny dla sesji
+Aby moźna w następnym kroku sprawdzać status skrypt zapisuje do pliku z rozszereniem .ref numer referencyjny dla sesji
 (np. jpk1.ref).
 
 ## 4. Sprawdzenie statusu / pobranie UPO
 
-> $ python wjpk.py **status** jpk1
+> python wjpk.py **status** jpk1
 
 W ostatnim kroku sprawdzamy **status** wysyłki a jeżeli nie ma błędów to pobierane jest równiez UPO.
 Bramka sprawdza jedynie syntaktyczną poprawność przesłanego pliku JPK tzn. zgodność z odpowiednim schematem XSD.
