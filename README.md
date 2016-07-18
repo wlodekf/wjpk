@@ -41,7 +41,6 @@ plik uwierzytelniający do podpisania podpisem kwalifikowanym.
 Krok init tworzy następujące pliki 
 
 * jpk1-initupload.xml - plik uwierzytelniający, który należy podpisać
-* jpk1.zip - archiwum z plikiem JPK (testowo)
 * jpk1.zip.aes - zaszyfrowane archiwum zip do wysłania w kroku 3
 
 ## 2. Podpisanie pliku uwierzytelniającego podpisem kwalifikowanym
