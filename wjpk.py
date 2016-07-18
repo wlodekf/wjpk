@@ -83,7 +83,6 @@ def upload(jpk_xades):
     headers= {'Content-Type': 'application/xml'}
     resp= requests.post(MF_URL+'/InitUploadSigned', data= initupload_xml, headers= headers, verify= False)
     if resp.status_code != 200:
-        print resp.text
         print 'InitUploadSigned', resp.status_code, repr(resp.text)
      
     resj= json.loads(resp.text)
