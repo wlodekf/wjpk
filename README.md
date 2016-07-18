@@ -59,7 +59,6 @@ Jako argument podajemy nazwę podpisanego pliku uwierzytelniającego.
 W kroku tym najpierw wysyłany jest plik uwierzytelniający i jeżeli wszystko z nim będzie w porządku to 
 następnie wysyłany jest spakowany i zaszyfrowany plik JPK (utworzony w pierwszym kroku plik z rozszerzeniem .aes).
 
-Jeżeli wysłanie się powiedzie to sprawdzany jest również status ale przeważnie plik nie będzie od razu przetworzony.
 Aby moźna w następnym kroku sprawdzać status skrypt zapisuje do pliku z rozszereniem .ref numer referencyjny dla sesji
 (np. jpk1.ref).
 
