@@ -84,7 +84,7 @@ def upload(jpk_xades):
     resp= requests.post(MF_URL+'/InitUploadSigned', data= initupload_xml, headers= headers, verify= False)
     if resp.status_code != 200:
         print resp.text
-        print 'Status', resp.status_code, type(resp.status_code)
+        print 'InitUploadSigned', resp.status_code, repr(resp.text)
      
     resj= json.loads(resp.text)
     reference= resj.get(u'ReferenceNumber')
@@ -104,16 +104,14 @@ def upload(jpk_xades):
         jpk_aes= open(aes_name, 'rb').read()
         resp= requests.put(url, data= jpk_aes, headers=headers, verify= False)
         if resp.status_code != 201:
-            print resp.text
-            print 'Status', resp.status_code
+            print 'PUT', resp.status_code, repr(resp.text)
  
     # FinishUpload
     data= {'ReferenceNumber': reference, 'AzureBlobNameList': blobs}
     headers= {'Content-Type': 'application/json'}
     resp= requests.post(MF_URL+'/FinishUpload', data= json.dumps(data), headers= headers, verify= False)
     if resp.status_code != 200:
-        print resp.text
-        print 'Status', resp.status_code
+        print 'FinishUpload', resp.status_code, repr(resp.text)
      
     # Zapisanie pliku initupload.xml w katalogu tymczasowym
     with open(jpk_nazwa+'.ref', 'wb') as f:
@@ -127,7 +125,7 @@ def upload_status(ref= None, jpk_nazwa= None):
     if ref is None:
         ref= open(re.sub('.xml$', '', jpk_nazwa.split('-')[0])+'.ref').read()
     resp= requests.get('%s/Status/%s'%(MF_URL, ref), verify= False)
-    print resp.text
+    print 'Status', resp.status_code, repr(resp.text)
 
  
 def main(argv):
