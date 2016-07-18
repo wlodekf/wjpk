@@ -69,7 +69,7 @@ def init_upload(jpk_nazwa):
     templ= string.Template( initupload_xml.read() )
     initupload_xml= templ.substitute(jpk)
     
-    # Zapisanie pliku initupload.xml w katalogu tymczasowym
+    # Zapisanie pliku initupload.xml
     with open(jpk_nazwa[:-4]+'-initupload.xml', 'wb') as f:
         f.write(initupload_xml)
 
@@ -77,16 +77,22 @@ def init_upload(jpk_nazwa):
 def upload(jpk_xades):
      
     initupload_xml= open(jpk_xades, 'rb').read()
-    jpk_nazwa= jpk_xades.split('-')[0]
+    jpk_nazwa= jpk_xades.split('-initupload.')[0]
      
     print 'Wysylanie %s...'%jpk_xades
     headers= {'Content-Type': 'application/xml'}
     resp= requests.post(MF_URL+'/InitUploadSigned', data= initupload_xml, headers= headers, verify= False)
     if resp.status_code != 200:
         print 'InitUploadSigned', resp.status_code, repr(resp.text)
+        return
      
     resj= json.loads(resp.text)
     reference= resj.get(u'ReferenceNumber')
+    print 'Reference', reference
+     
+    # Zapisanie pliku initupload.xml w katalogu tymczasowym
+    with open(jpk_nazwa+'.ref', 'wb') as f:
+        f.write(reference)
      
     blobs= []
     for upload_req in resj.get(u'RequestToUploadFileList'):
@@ -104,6 +110,7 @@ def upload(jpk_xades):
         resp= requests.put(url, data= jpk_aes, headers=headers, verify= False)
         if resp.status_code != 201:
             print 'PUT', resp.status_code, repr(resp.text)
+            return
  
     # FinishUpload
     data= {'ReferenceNumber': reference, 'AzureBlobNameList': blobs}
@@ -111,27 +118,20 @@ def upload(jpk_xades):
     resp= requests.post(MF_URL+'/FinishUpload', data= json.dumps(data), headers= headers, verify= False)
     if resp.status_code != 200:
         print 'FinishUpload', resp.status_code, repr(resp.text)
-     
-    # Zapisanie pliku initupload.xml w katalogu tymczasowym
-    with open(jpk_nazwa+'.ref', 'wb') as f:
-        f.write(reference)
             
-    print 'Reference', reference
     return reference
      
      
 def upload_status(ref= None, jpk_nazwa= None):
     if ref is None:
-        ref= open(re.sub('.xml$', '', jpk_nazwa.split('-')[0])+'.ref').read()
+        ref= open(re.sub('.xml$', '', jpk_nazwa.split('-initupload.')[0])+'.ref').read()
     resp= requests.get('%s/Status/%s'%(MF_URL, ref), verify= False)
     print 'Status', resp.status_code, repr(resp.text)
 
  
 def main(argv):
     if argv[1] == 'init': init_upload(argv[2])
-    if argv[1] == 'upload': 
-        ref= upload(argv[2])
-        upload_status(ref= ref)
+    if argv[1] == 'upload': upload(argv[2])
     if argv[1] == 'status': upload_status(jpk_nazwa= argv[2])
         
 if __name__ == "__main__":
