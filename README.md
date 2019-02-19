@@ -1,5 +1,7 @@
 # Przygotowanie i wysyłka plików JPK
 
+Patrz również: [Wizualizacja sprawozdań finansowych w formacie XML](https://github.com/wlodekf/sprawozdania)
+
 Skrypt w pythonie (2.7) do przygotowania (zaszyfrowanie), wysyłki plików JPK oraz pobrania UPO.
 
 W używanym środowisku pythona wymagane są następujące zależności:
